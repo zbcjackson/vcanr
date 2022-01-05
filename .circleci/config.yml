@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install dependencies
+          command: apt update && apt install cmake pkg-config
+      - run:
           name: Run the default task
           command: |
             gem install bundler -v 2.3.4
