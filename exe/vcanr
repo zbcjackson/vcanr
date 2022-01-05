@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 
-require "vcanr"
+require_relative "../lib/vcanr"
+Vcanr.application.run
