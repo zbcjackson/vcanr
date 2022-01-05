@@ -9,7 +9,7 @@ module Vcanr
       begin
         init argv
         @churn_analyzer.analyze
-        puts @churn_analyzer.report
+        @churn_analyzer.report
       rescue OptionParser::InvalidOption => ex
         $stderr.puts ex.message
         exit(false)

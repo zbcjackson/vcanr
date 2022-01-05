@@ -1,9 +1,10 @@
+require 'formatador'
+
 module Vcanr
   class ChurnReporter
     def report(stat)
-      summary = []
-      stat.sort_by { |file, count| count }.reverse.each { |pair| summary << "%s \t %d" % pair}
-      summary.join("\n")
+      table = stat.sort_by { |file, count| count }.reverse.map { |pair| { file: pair[0], churn: pair[1] } }
+      Formatador.display_table(table, [:file, :churn])
     end
   end
 end
