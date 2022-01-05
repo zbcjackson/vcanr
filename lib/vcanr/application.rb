@@ -1,19 +1,13 @@
-require 'optparse'
-require 'ostruct'
-require 'rugged'
+require "optparse"
+require "ostruct"
+require "rugged"
 
 module Vcanr
   class Application
-
     def run(argv = ARGV)
-      begin
-        init argv
-        @churn_analyzer.analyze
-        @churn_analyzer.report
-      rescue OptionParser::InvalidOption => ex
-        $stderr.puts ex.message
-        exit(false)
-      end
+      init argv
+      @churn_analyzer.analyze
+      @churn_analyzer.report
     end
 
     def init(argv)
@@ -34,10 +28,12 @@ module Vcanr
           exit
         end
 
-
         standard_options.each { |args| opts.on(*args) }
       end.parse!(argv)
       options.repo_path = args[0] unless args.empty?
+    rescue OptionParser::InvalidOption => ex
+      warn ex.message
+      exit(false)
     end
 
     def options
@@ -53,8 +49,8 @@ module Vcanr
 
     def standard_options
       sort_options([
-                     ["--churn", "-c", "Churn analytics", lambda {|value| options.churn = true}]
-                   ])
+        ["--churn", "-c", "Churn analytics", lambda { |value| options.churn = true }]
+      ])
     end
 
     def set_default_options

@@ -1,4 +1,4 @@
-require_relative 'application'
+require_relative "application"
 module Vcanr
   class << self
     def application

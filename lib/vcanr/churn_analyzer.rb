@@ -17,10 +17,10 @@ module Vcanr
           when :deleted
             @stat.delete(file)
           else
-            if @stat.has_key?(file)
-              @stat[file] = @stat[file] + 1
+            @stat[file] = if @stat.has_key?(file)
+              @stat[file] + 1
             else
-              @stat[file] = 1
+              1
             end
           end
         end
