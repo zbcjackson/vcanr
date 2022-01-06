@@ -1,4 +1,3 @@
-
 module Vcanr
   class ChurnAnalyzer
     def initialize(repo_accessor, reporter = ChurnReporter.new)
