@@ -1,6 +1,5 @@
 require "optparse"
 require "ostruct"
-require "rugged"
 
 module Vcanr
   class Application

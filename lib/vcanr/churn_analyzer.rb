@@ -1,27 +1,20 @@
+
 module Vcanr
   class ChurnAnalyzer
     def initialize(repo_path)
       @stat = {}
-      @repo = Rugged::Repository.new repo_path
+      @repo_accessor = GitRepoAccessor.new repo_path
       @reporter = ChurnReporter.new
     end
 
     def analyze
-      walker = Rugged::Walker.new @repo
-      walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_REVERSE)
-      walker.push(@repo.head.target_id)
-      walker.each do |c|
-        c.diff.deltas.each do |d|
-          file = d.old_file[:path]
+      @repo_accessor.commits.each do |c|
+        c.deltas.each do |d|
           case d.status
           when :deleted
-            @stat.delete(file)
+            @stat.delete(d.file)
           else
-            @stat[file] = if @stat.has_key?(file)
-              @stat[file] + 1
-            else
-              1
-            end
+            @stat[d.file] = @stat.has_key?(d.file) ? @stat[d.file] + 1 : 1
           end
         end
       end
