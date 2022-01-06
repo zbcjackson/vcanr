@@ -1,10 +1,10 @@
 
 module Vcanr
   class ChurnAnalyzer
-    def initialize(repo_path)
+    def initialize(repo_accessor, reporter = ChurnReporter.new)
       @stat = {}
-      @repo_accessor = GitRepoAccessor.new repo_path
-      @reporter = ChurnReporter.new
+      @repo_accessor = repo_accessor
+      @reporter = reporter
     end
 
     def analyze

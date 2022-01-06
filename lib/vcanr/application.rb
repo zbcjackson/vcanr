@@ -11,7 +11,7 @@ module Vcanr
 
     def init(argv)
       handle_options argv
-      @churn_analyzer = ChurnAnalyzer.new options.repo_path
+      @churn_analyzer = ChurnAnalyzer.new(GitRepoAccessor.new options.repo_path)
     end
 
     def handle_options(argv)
