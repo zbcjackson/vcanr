@@ -6,7 +6,7 @@ module Vcanr
     deltas.each do |d|
       delta = Delta.new
       delta.file = d.is_a?(Hash) ? d[:file] : d
-      delta.status= d.is_a?(Hash) ? d[:status] : :modified
+      delta.status = d.is_a?(Hash) ? d[:status] : :modified
       commit.deltas << delta
     end
     commit
@@ -34,11 +34,10 @@ module Vcanr
     end
 
     it "remove file stat when file change is deleted" do
-      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with({file:"a.txt", status: :deleted})] }
+      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with({file: "a.txt", status: :deleted})] }
       @churn_analyzer.analyze
       @churn_analyzer.report
       expect(@reporter).to have_received(:report).with({"b.txt" => 1})
     end
-
   end
 end
