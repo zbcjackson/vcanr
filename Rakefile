@@ -7,4 +7,9 @@ RSpec::Core::RakeTask.new(:spec)
 
 require "standard/rake"
 
-task default: %i[spec standard]
+require "cucumber"
+require "cucumber/rake/task"
+
+Cucumber::Rake::Task.new(:cucumber)
+
+task default: %i[spec cucumber standard]
