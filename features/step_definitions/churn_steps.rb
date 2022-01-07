@@ -1,3 +1,12 @@
+def shell(cmd)
+  output = `#{cmd}`
+  unless $?.success?
+    p output
+    raise "Shell error"
+  end
+  output
+end
+
 Given("there is a repo with commits") do |table|
   Dir.mkdir "./tmp" unless File.exist?("./tmp")
   dir = Dir.mktmpdir
@@ -5,24 +14,25 @@ Given("there is a repo with commits") do |table|
   p @path
   Dir.mkdir @path
   Dir.chdir @path do
-    `git init`
+    shell "git init"
     table.hashes.each_with_index do |commit, index|
       (commit["Add"].split + commit["Modify"].split).each do |file|
-        `echo 1 >> #{file}`
+        shell "echo 1 >> #{file}"
       end
-      `git add .`
-      `git commit -m "commit #{index}"`
+      shell "git add ."
+      shell "git commit -m 'commit #{index}'"
     end
   end
 end
 
 When("churn analyze the repo") do
-  @report = `exe/vcanr #{@path}`
+  @report = shell "exe/vcanr #{@path}"
 end
 
 Then("the report shows") do |table|
-  @report.scan(/\|\s*(.*?)\s*\|\s*(\d+)\s*\|/).each_with_index do |match, index|
-    expect(match[0]).to eq(table.hashes[index]["file"])
-    expect(match[1]).to eq(table.hashes[index]["churn"])
+  result = @report.scan(/\|\s*(.*?)\s*\|\s*(\d+)\s*\|/)
+  table.hashes.each_with_index do |expected, index|
+    expect(result[index][0]).to eq(expected["file"])
+    expect(result[index][1]).to eq(expected["churn"])
   end
 end

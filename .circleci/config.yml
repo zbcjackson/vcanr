@@ -9,6 +9,12 @@ jobs:
           name: Install dependencies
           command: apt update && apt install -y cmake pkg-config
       - run:
+          name: Config Git
+          command: |
+            git config --global init.defaultBranch master
+            git config --global user.email "test@gmail.com"
+            git config --global user.name "test"
+      - run:
           name: Run the default task
           command: |
             gem install bundler -v 2.3.4
