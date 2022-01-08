@@ -1,5 +1,3 @@
-require "rspec"
-
 module Vcanr
   def commit_with(*deltas)
     commit = Commit.new

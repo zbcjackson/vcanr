@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "vcanr"
+require_relative "shell/shell"
+require_relative "shell/git"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

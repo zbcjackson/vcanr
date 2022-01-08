@@ -1,3 +1,6 @@
+require "fileutils"
+require "tmpdir"
+
 def init_repo
   Dir.mkdir "./tmp" unless File.exist?("./tmp")
   dir = Dir.mktmpdir
@@ -14,4 +17,8 @@ def add_commit(index)
     shell "git add ."
     shell "git commit -m 'commit #{index}'"
   end
+end
+
+def delete_repo
+  FileUtils.rm_rf @path
 end

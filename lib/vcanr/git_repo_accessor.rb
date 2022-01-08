@@ -8,6 +8,7 @@ module Vcanr
 
     def commits
       commits_history = []
+      return commits_history if @repo.empty?
       walker = Rugged::Walker.new @repo
       walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_REVERSE)
       walker.push(@repo.head.target_id)
