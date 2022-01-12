@@ -3,7 +3,8 @@ module Vcanr
     commit = Commit.new
     deltas.each do |d|
       delta = Delta.new
-      delta.old_file = d.is_a?(Hash) ? d[:file] : d
+      delta.old_file = d.is_a?(Hash) ? d[:old_file] : d
+      delta.new_file = d.is_a?(Hash) ? d[:new_file] : d
       delta.status = d.is_a?(Hash) ? d[:status] : :modified
       commit.deltas << delta
     end
@@ -32,10 +33,17 @@ module Vcanr
     end
 
     it "remove file stat when file change is deleted" do
-      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with({file: "a.txt", status: :deleted})] }
+      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with({old_file: "a.txt", status: :deleted})] }
       @churn_analyzer.analyze
       @churn_analyzer.report
       expect(@reporter).to have_received(:report).with({"b.txt" => 1})
+    end
+
+    it "replace file stat when file change is renamed" do
+      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with("a.txt"), commit_with({old_file: "a.txt", new_file: "c/c.txt", status: :renamed})] }
+      @churn_analyzer.analyze
+      @churn_analyzer.report
+      expect(@reporter).to have_received(:report).with({"b.txt" => 1, "c/c.txt" => 2})
     end
   end
 end
