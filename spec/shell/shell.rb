@@ -12,7 +12,7 @@ def add_dir(dir)
 end
 
 def change_file(file)
-  shell "echo 1 >> #{@path}/#{file}"
+  shell "echo #{rand} >> #{@path}/#{file}"
 end
 
 def move_file(file, to)

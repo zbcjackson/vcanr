@@ -11,9 +11,9 @@ module Vcanr
         c.deltas.each do |d|
           case d.status
           when :deleted
-            @stat.delete(d.file)
+            @stat.delete(d.old_file)
           else
-            @stat[d.file] = @stat.has_key?(d.file) ? @stat[d.file] + 1 : 1
+            @stat[d.old_file] = @stat.has_key?(d.old_file) ? @stat[d.old_file] + 1 : 1
           end
         end
       end

@@ -18,9 +18,12 @@ module Vcanr
         commit.message = c.message
         commit.time = Time.at(c.epoch_time)
         commit.committer = c.committer
-        c.diff.deltas.each do |d|
+        diff = c.diff
+        diff.find_similar! all: true
+        diff.each_delta do |d|
           delta = Delta.new
-          delta.file = d.old_file[:path]
+          delta.old_file = d.old_file[:path]
+          delta.new_file = d.new_file[:path]
           delta.status = d.status
           commit.deltas << delta
         end
@@ -40,6 +43,6 @@ module Vcanr
   end
 
   class Delta
-    attr_accessor :file, :status
+    attr_accessor :old_file, :new_file, :status
   end
 end

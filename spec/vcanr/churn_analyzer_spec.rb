@@ -3,7 +3,7 @@ module Vcanr
     commit = Commit.new
     deltas.each do |d|
       delta = Delta.new
-      delta.file = d.is_a?(Hash) ? d[:file] : d
+      delta.old_file = d.is_a?(Hash) ? d[:file] : d
       delta.status = d.is_a?(Hash) ? d[:status] : :modified
       commit.deltas << delta
     end

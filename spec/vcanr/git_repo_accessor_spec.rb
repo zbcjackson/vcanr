@@ -34,31 +34,29 @@ module Vcanr
       it "commits contains added changes" do
         expect(@repo.commits[0].message).to eq("commit 1\n")
         expect(@repo.commits[0].deltas.size).to eq(3)
-        expect(@repo.commits[0].deltas[0]).to have_attributes(file: "a.txt", status: :added)
-        expect(@repo.commits[0].deltas[1]).to have_attributes(file: "b.txt", status: :added)
-        expect(@repo.commits[0].deltas[2]).to have_attributes(file: "c.txt", status: :added)
+        expect(@repo.commits[0].deltas[0]).to have_attributes(old_file: "a.txt", new_file: "a.txt", status: :added)
+        expect(@repo.commits[0].deltas[1]).to have_attributes(old_file: "b.txt", new_file: "b.txt", status: :added)
+        expect(@repo.commits[0].deltas[2]).to have_attributes(old_file: "c.txt", new_file: "c.txt", status: :added)
       end
       it "commits contains modified changes" do
         expect(@repo.commits[1].message).to eq("commit 2\n")
         expect(@repo.commits[1].deltas.size).to eq(1)
-        expect(@repo.commits[1].deltas[0]).to have_attributes(file: "a.txt", status: :modified)
+        expect(@repo.commits[1].deltas[0]).to have_attributes(old_file: "a.txt", new_file: "a.txt", status: :modified)
       end
       it "commits contains deleted changes" do
         expect(@repo.commits[2].message).to eq("commit 3\n")
         expect(@repo.commits[2].deltas.size).to eq(1)
-        expect(@repo.commits[2].deltas[0]).to have_attributes(file: "b.txt", status: :deleted)
+        expect(@repo.commits[2].deltas[0]).to have_attributes(old_file: "b.txt", new_file: "b.txt", status: :deleted)
       end
       it "commits contains renamed changes" do
         expect(@repo.commits[3].message).to eq("commit 4\n")
-        expect(@repo.commits[3].deltas.size).to eq(2)
-        expect(@repo.commits[3].deltas[0]).to have_attributes(file: "c.txt", status: :deleted)
-        expect(@repo.commits[3].deltas[1]).to have_attributes(file: "d.txt", status: :added)
+        expect(@repo.commits[3].deltas.size).to eq(1)
+        expect(@repo.commits[3].deltas[0]).to have_attributes(old_file: "c.txt", new_file: "d.txt", status: :renamed)
       end
       it "commits contains moved changes" do
         expect(@repo.commits[4].message).to eq("commit 5\n")
-        expect(@repo.commits[4].deltas.size).to eq(2)
-        expect(@repo.commits[4].deltas[0]).to have_attributes(file: "d.txt", status: :deleted)
-        expect(@repo.commits[4].deltas[1]).to have_attributes(file: "d/d.txt", status: :added)
+        expect(@repo.commits[4].deltas.size).to eq(1)
+        expect(@repo.commits[4].deltas[0]).to have_attributes(old_file: "d.txt", new_file: "d/d.txt", status: :renamed)
       end
     end
   end
