@@ -14,6 +14,7 @@ module Vcanr
             @stat.delete(d.old_file)
           when :renamed
             @stat[d.new_file] = @stat[d.old_file]
+            @stat[d.new_file] = @stat[d.new_file] + 1 if d.lines > 0
             @stat.delete(d.old_file)
           else
             @stat[d.old_file] = @stat.has_key?(d.old_file) ? @stat[d.old_file] + 1 : 1

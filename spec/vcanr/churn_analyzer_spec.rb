@@ -6,6 +6,7 @@ module Vcanr
       delta.old_file = d.is_a?(Hash) ? d[:old_file] : d
       delta.new_file = d.is_a?(Hash) ? d[:new_file] : d
       delta.status = d.is_a?(Hash) ? d[:status] : :modified
+      delta.lines = d.is_a?(Hash) ? d[:lines] : 0
       commit.deltas << delta
     end
     commit
@@ -40,10 +41,17 @@ module Vcanr
     end
 
     it "replace file stat when file change is renamed" do
-      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with("a.txt"), commit_with({old_file: "a.txt", new_file: "c/c.txt", status: :renamed})] }
+      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with("a.txt"), commit_with({old_file: "a.txt", new_file: "c/c.txt", status: :renamed, lines: 0})] }
       @churn_analyzer.analyze
       @churn_analyzer.report
       expect(@reporter).to have_received(:report).with({"b.txt" => 1, "c/c.txt" => 2})
+    end
+
+    it "replace file stat when file change is renamed and changed" do
+      allow(@repo_accessor).to receive(:commits) { [commit_with("a.txt", "b.txt"), commit_with("a.txt"), commit_with({old_file: "a.txt", new_file: "c/c.txt", status: :renamed, lines: 1})] }
+      @churn_analyzer.analyze
+      @churn_analyzer.report
+      expect(@reporter).to have_received(:report).with({"b.txt" => 1, "c/c.txt" => 3})
     end
   end
 end
