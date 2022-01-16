@@ -18,3 +18,8 @@ Then("the report shows") do |table|
     expect(result[index][1]).to eq(expected["churn"])
   end
 end
+
+And(/^rename file "([^"]*)" to "([^"]*)"$/) do |old_file, new_file|
+  move_file old_file, new_file
+  add_commit(5)
+end

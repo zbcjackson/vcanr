@@ -16,6 +16,9 @@ def change_file(file)
 end
 
 def move_file(file, to)
+  last_slash = to.rindex("/")
+  dirs = to[0..last_slash - 1]
+  shell "mkdir -p #{@path}/#{dirs}"
   shell "mv #{@path}/#{file} #{@path}/#{to}"
 end
 
