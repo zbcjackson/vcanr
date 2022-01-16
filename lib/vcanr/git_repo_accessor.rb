@@ -20,11 +20,13 @@ module Vcanr
         commit.committer = c.committer
         diff = c.diff
         diff.find_similar! all: true
-        diff.each_delta do |d|
+        diff.each_patch do |patch|
+          d = patch.delta
           delta = Delta.new
           delta.old_file = d.old_file[:path]
           delta.new_file = d.new_file[:path]
           delta.status = d.status
+          delta.lines = patch.lines(exclude_context: true)
           commit.deltas << delta
         end
         commits_history << commit
@@ -43,6 +45,6 @@ module Vcanr
   end
 
   class Delta
-    attr_accessor :old_file, :new_file, :status
+    attr_accessor :old_file, :new_file, :status, :lines
   end
 end
