@@ -19,7 +19,7 @@ module Vcanr
         commit.time = Time.at(c.epoch_time)
         commit.committer = c.committer
         diff = c.diff
-        diff.find_similar! all: true
+        diff.find_similar! all: true, break_rewrite_threshold: 30
         diff.each_patch do |patch|
           d = patch.delta
           delta = Delta.new
