@@ -6,7 +6,7 @@ module Vcanr
     end
 
     after do
-      # delete_repo
+      delete_repo
     end
 
     context "when repo is empty" do
