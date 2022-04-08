@@ -2,7 +2,6 @@ require "fileutils"
 require "tmpdir"
 
 def init_repo
-  Dir.mkdir "./tmp" unless File.exist?("./tmp")
   dir = Dir.mktmpdir
   @path = "#{dir}/repo#{Time.now.to_i}"
   p @path
